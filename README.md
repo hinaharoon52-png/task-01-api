@@ -55,3 +55,10 @@ See `.env.example` for example environment variables.
 - FastAPI
 - Uvicorn
 - uv
+## Health Check
+
+The API provides a health-check endpoint at:
+
+http://127.0.0.1:8000/health
+
+A successful response confirms that the API is running.
