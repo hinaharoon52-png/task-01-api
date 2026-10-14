@@ -1,4 +1,4 @@
-# Task 01 API
+# Task 02 - Messages API
 
 A simple REST API built with FastAPI and Uvicorn.
 
@@ -62,3 +62,22 @@ The API provides a health-check endpoint at:
 http://127.0.0.1:8000/health
 
 A successful response confirms that the API is running.
+## Messages API
+
+The API provides endpoints to create, list, retrieve, update, and delete messages.
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/messages` | Create a message |
+| GET | `/api/v1/messages` | List messages |
+| GET | `/api/v1/messages/{message_id}` | Get a message by ID |
+| PATCH | `/api/v1/messages/{message_id}` | Update a message |
+| DELETE | `/api/v1/messages/{message_id}` | Delete a message |
+
+### API Documentation
+
+Start the server and open `http://127.0.0.1:8000/docs` to test the endpoints interactively.
+
+Messages are stored in memory and are not preserved when the application restarts.

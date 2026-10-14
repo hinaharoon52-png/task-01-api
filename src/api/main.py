@@ -1,13 +1,24 @@
-﻿from fastapi import FastAPI
+﻿
+from fastapi import FastAPI
+
+from api.routes import router
+
 
 app = FastAPI(
-    title="Task 01 API",
-    version="0.1.0",
+    title="Messages API",
+    description="A simple in-memory API for managing messages.",
+    version="1.0.0",
 )
 
-@app.get("/health")
+app.include_router(router)
+
+
+@app.get("/health", tags=["Health"])
 def health_check():
     return {
         "status": "ok",
         "version": app.version,
     }
+
+
+
