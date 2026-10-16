@@ -6,7 +6,11 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.143.0",
+    "google-genai>=2.31.0",
+    "openai>=3.31.0",
+    "pydantic-settings>=2.16.0",
     "uvicorn[standard]>=0.54.0",
+    "websockets>=13,<16",
 ]
 
 [project.scripts]
@@ -15,3 +19,9 @@ task-01-api = "task_01_api:main"
 [build-system]
 requires = ["uv_build>=0.13.0,<0.14.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest-asyncio>=1.4.0",
+]
