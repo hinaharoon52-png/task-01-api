@@ -1,33 +1,49 @@
 
-from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from task_01_api.llm_service import generate_reply
+from app.services.llm import GeminiLLMService
 
 
 @pytest.mark.asyncio
 async def test_generate_reply_returns_fake_response():
-    fake_response = SimpleNamespace(
-        text="Dependency injection supplies required objects.",
-        model_version="fake-model",
-        usage_metadata=SimpleNamespace(
-            prompt_token_count=10,
-            candidates_token_count=12,
-        ),
-    )
+    fake_response = type(
+        "FakeResponse",
+        (),
+        {
+            "text": "This is a fake response.",
+            "model_version": "fake-model",
+            "usage_metadata": type(
+                "FakeUsage",
+                (),
+                {
+                    "prompt_token_count": 5,
+                    "candidates_token_count": 7,
+                },
+            )(),
+        },
+    )()
 
     with patch(
-        "task_01_api.llm_service.client.aio.models.generate_content",
-        new_callable=AsyncMock,
-        return_value=fake_response,
-    ) as mock_generate:
-        result = await generate_reply("Explain dependency injection.")
+        "app.services.llm.get_settings"
+    ) as mock_settings:
+        mock_settings.return_value.gemini_model = "fake-model"
+        mock_settings.return_value.max_output_tokens = 500
+        mock_settings.return_value.gemini_api_key = "fake-test-key"
+        mock_settings.return_value.llm_timeout_seconds = 30
 
-    assert result.answer == "Dependency injection supplies required objects."
+        service = GeminiLLMService()
+
+    service.client.aio.models.generate_content = AsyncMock(
+        return_value=fake_response
+    )
+
+    result = await service.generate_reply("Hello")
+
+    assert result.answer == "This is a fake response."
     assert result.model == "fake-model"
-    assert result.input_tokens == 10
-    assert result.output_tokens == 12
+    assert result.input_tokens == 5
+    assert result.output_tokens == 7
 
-    mock_generate.assert_awaited_once()
+    service.client.close()
