@@ -16,8 +16,7 @@ from app.core.exceptions import (
 from app.schemas.chat import ErrorResponse, ErrorDetail
 
 
-app = FastAPI(title="Task 04 - Maintainable Chat API", version="0.4.0")
-
+app = FastAPI(title="Contoso Document Reader", version="0.4.0")
 REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]{1,100}$")
 
 
